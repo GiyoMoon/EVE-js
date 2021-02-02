@@ -6,5 +6,6 @@ export default class readyListener {
 
     public async evalReady() {
         console.log(`Logged in as ${this._botClient.getClient().user.tag}`);
+        this._botClient.afterReady();
     }
 }

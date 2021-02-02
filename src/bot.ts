@@ -37,8 +37,6 @@ export class EVEBot {
         // init event listeners
         this._initEvents();
 
-        this._loadModules();
-
         this._client.login(config.botToken);
     }
 
@@ -69,5 +67,9 @@ export class EVEBot {
 
     public getConfig() {
         return config;
+    }
+
+    public afterReady() {
+        this._loadModules();
     }
 }

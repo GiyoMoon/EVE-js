@@ -19,6 +19,17 @@ export default class messageListener {
             return;
         }
 
+        if (msg.channel.id === this._bot.getConfig().consoleChannelID) {
+            const mcServerInstance = this._bot.getModules().find(m => m.id === 1).instance;
+            if (msg.content === 'start') {
+                // @ts-ignore
+                mcServerInstance['startServer']();
+            } else {
+                // @ts-ignore
+                mcServerInstance['sendCommand'](msg.content);
+            }
+        }
+
         if (!msg.content.startsWith(this._prefix) && msg.channel.type !== 'dm') return;
 
         let args;
