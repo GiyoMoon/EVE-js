@@ -6,6 +6,7 @@ import readyListener from './listeners/readyListener';
 
 import { Module } from './interfaces/module';
 
+// @ts-ignore
 import config from './config/config.json';
 
 export class EVEBot {
