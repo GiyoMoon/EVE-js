@@ -60,7 +60,7 @@ export default class MCServerProcess {
 
     private _log(data: string, error: boolean): void {
         const dataAsString = data.toString();
-        if (dataAsString.includes('joined the game')) {
+        if (dataAsString.includes('logged in with entity id')) {
             this._statusWorker.addPlayer();
         } else if (dataAsString.includes('left the game')) {
             this._statusWorker.removePlayer();
