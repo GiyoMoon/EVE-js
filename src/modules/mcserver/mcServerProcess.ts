@@ -60,13 +60,13 @@ export default class MCServerProcess {
 
     private _log(data: string, error: boolean): void {
         const dataAsString = data.toString();
-        if (dataAsString.includes('logged in with entity id')) {
+        if (dataAsString.includes('joined the game')) {
             this._statusWorker.addPlayer();
-        } else if (dataAsString.includes('lost connection')) {
+        } else if (dataAsString.includes('left the game')) {
             this._statusWorker.removePlayer();
         } else if (dataAsString.includes('For help, type "help"')) {
             this._statusWorker.serverStarted();
-        } else if (dataAsString.includes('Stopping the server')) {
+        } else if (dataAsString.includes('Saving worlds')) {
             this._running = false;
             this._statusWorker.serverStopped();
         }
