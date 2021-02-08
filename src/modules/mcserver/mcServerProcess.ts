@@ -42,7 +42,7 @@ export default class MCServerProcess {
             '-XX:G1RSetUpdatingPauseTimePercent=5',
             '-XX:SurvivorRatio=32',
             '-XX:+PerfDisableSharedMem',
-            '-XX:MaxTenuringThreshold=',
+            '-XX:MaxTenuringThreshold=1',
             '-jar',
             '/server/server.jar',
             'nogui'
