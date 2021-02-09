@@ -1,15 +1,43 @@
 ![EVE](https://imgur.com/cgiKlF3.png)
+
 With EVE you can control a Minecraft server via Discord!
+
 ![Example](https://imgur.com/cEiEgAw.png)
 # Setting EVE up
 ## Config file
 EVE needs a `config.json` file with the following content:
 ```json
 {
-   "botToken": "YOUR_BOT_TOKEN",
+    "botToken": "YOUR_BOT_TOKEN",
     "botOwnerID": "YOUR_DISCORD_ID",
     "consoleChannelID": "MINECRAFT_CONSOLE_CHANNEL_ID",
-    "MCmaxPlayers": 5
+    "MCmaxPlayers": 5,
+    "MCserverFlags": [
+        "-Xms6G",
+        "-Xmx6G",
+        "-XX:+UseG1GC",
+        "-XX:+ParallelRefProcEnabled",
+        "-XX:MaxGCPauseMillis=200",
+        "-XX:+UnlockExperimentalVMOptions",
+        "-XX:+DisableExplicitGC",
+        "-XX:+AlwaysPreTouch",
+        "-XX:G1NewSizePercent=30",
+        "-XX:G1MaxNewSizePercent=40",
+        "-XX:G1HeapRegionSize=8M",
+        "-XX:G1ReservePercent=20",
+        "-XX:G1HeapWastePercent=5",
+        "-XX:G1MixedGCCountTarget=4",
+        "-XX:InitiatingHeapOccupancyPercent=15",
+        "-XX:G1MixedGCLiveThresholdPercent=90",
+        "-XX:G1RSetUpdatingPauseTimePercent=5",
+        "-XX:SurvivorRatio=32",
+        "-XX:+PerfDisableSharedMem",
+        "-XX:MaxTenuringThreshold=1",
+        "-jar",
+        "server.jar",
+        "nogui"
+    ],
+    "MCserverPath": "/server"
 }
 ```
 ### Additional Info
@@ -17,23 +45,26 @@ EVE needs a `config.json` file with the following content:
 - `MCmaxPlayers` is the max player count of your server. This property will be used in the status of the discord bot. Like this:
 
 ![EVEStatus](https://imgur.com/vw3Tdef.png)
+
+
+- `MCserverFlags` are all the java flags which are used to start the server. They are inspired from [here](https://aikar.co/2018/07/02/).
 ## Starting the container
 EVE gets automatically builded and deployed on [Docker Hub](https://hub.docker.com/r/giyomoon/eve) and can be pulled from there.
 
 The container can be run with the following command:
 ```bash
-docker run -d -p 25565:25565 -p 8080:80 -v PATH_TO_YOUR_CONFIG_FOLDER:/eve/config -v PATH_TO_YOUR_SERVER_FOLDER:/server --name EVE giyomoon/eve
+docker run -d -p 25565:25565 -v PATH_TO_YOUR_CONFIG_FOLDER:/eve/config -v PATH_TO_YOUR_SERVER_FOLDER:/server --name EVE giyomoon/eve
 ```
 
 For example:
 ```bash
-docker run -d -p 25565:25565 -p 8080:80 -v /srv/config:/eve/config -v /srv/mcserver:/server --name EVE giyomoon/eve
+docker run -d -p 25565:25565 -v /srv/config:/eve/config -v /srv/mcserver:/server --name EVE giyomoon/eve
 ```
-
+Additional ports can be mapped if you are running a dynmap for example.
 ### Volume folders
 `/srv/config` is a folder which includes the `config.json` file.
 
-`/srv/mcserver` is the folder which includes the Minecraft server. It has to include a `.jar` file called `server.jar`. EVE starts this server with optimized java flags. Read more [here](https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/)
+`/srv/mcserver` is the folder which includes the Minecraft server. It has to include a `.jar` file called `server.jar`.
 
 # Planned features
 ## [In progress] Permissions
