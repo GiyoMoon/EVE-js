@@ -1,6 +1,8 @@
 import childProcess from 'child_process';
 import { TextChannel } from 'discord.js';
+
 import StatusWorker from './statusWorker';
+import { Config } from '../../interfaces/config';
 
 export default class MCServerProcess {
     private _server: any;
@@ -11,7 +13,11 @@ export default class MCServerProcess {
 
     private _running = false;
 
-    constructor(private _consoleChannel: TextChannel, private _statusWorker: StatusWorker) {
+    constructor(
+        private _consoleChannel: TextChannel,
+        private _statusWorker: StatusWorker,
+        private _config: Config
+    ) {
         this._statusWorker.serverStopped()
     }
 
@@ -22,31 +28,7 @@ export default class MCServerProcess {
         }
         this._running = true;
         this._consoleChannel.send(':green_circle: Starting up...');
-        this._server = childProcess.spawn('java', [
-            '-Xms6G',
-            '-Xmx6G',
-            '-XX:+UseG1GC',
-            '-XX:+ParallelRefProcEnabled',
-            '-XX:MaxGCPauseMillis=200',
-            '-XX:+UnlockExperimentalVMOptions',
-            '-XX:+DisableExplicitGC',
-            '-XX:+AlwaysPreTouch',
-            '-XX:G1NewSizePercent=30',
-            '-XX:G1MaxNewSizePercent=40',
-            '-XX:G1HeapRegionSize=8M',
-            '-XX:G1ReservePercent=20',
-            '-XX:G1HeapWastePercent=5',
-            '-XX:G1MixedGCCountTarget=4',
-            '-XX:InitiatingHeapOccupancyPercent=15',
-            '-XX:G1MixedGCLiveThresholdPercent=90',
-            '-XX:G1RSetUpdatingPauseTimePercent=5',
-            '-XX:SurvivorRatio=32',
-            '-XX:+PerfDisableSharedMem',
-            '-XX:MaxTenuringThreshold=1',
-            '-jar',
-            '/server/server.jar',
-            'nogui'
-        ], { cwd: '/server' });
+        this._server = childProcess.spawn('java', this._config.MCserverFlags, { cwd: this._config.MCserverPath });
         this._listenToSTD();
     }
 

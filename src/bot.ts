@@ -5,6 +5,7 @@ import messageListener from './listeners/messageListener';
 import readyListener from './listeners/readyListener';
 
 import { Module } from './interfaces/module';
+import { Config } from './interfaces/config';
 
 // @ts-ignore
 import config from './config/config.json';
@@ -66,7 +67,7 @@ export class EVEBot {
         });
     }
 
-    public getConfig() {
+    public getConfig(): Config {
         return config;
     }
 

@@ -1,4 +1,4 @@
-import { Client, Message, MessageEmbed, TextChannel } from 'discord.js';
+import { Client, Message, TextChannel } from 'discord.js';
 
 import { EVEBot } from './../../bot';
 import { ModuleInstance } from './../../interfaces/moduleInstance';
@@ -30,7 +30,7 @@ export default class mcServer implements ModuleInstance {
         this._client = this._bot.getClient();
         const consoleChannel = this._client.channels.cache.get(this._bot.getConfig().consoleChannelID) as TextChannel;
         this._statusWorker = new StatusWorker(this._bot);
-        this._mcServerProcess = new MCServerProcess(consoleChannel, this._statusWorker);
+        this._mcServerProcess = new MCServerProcess(consoleChannel, this._statusWorker, this._bot.getConfig());
     }
 
     public executeInfo(msg: Message) {
