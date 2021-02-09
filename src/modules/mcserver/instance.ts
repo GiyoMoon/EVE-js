@@ -29,7 +29,7 @@ export default class mcServer implements ModuleInstance {
     constructor(private _bot: EVEBot) {
         this._client = this._bot.getClient();
         const consoleChannel = this._client.channels.cache.get(this._bot.getConfig().consoleChannelID) as TextChannel;
-        this._statusWorker = new StatusWorker(this._client);
+        this._statusWorker = new StatusWorker(this._bot);
         this._mcServerProcess = new MCServerProcess(consoleChannel, this._statusWorker);
     }
 

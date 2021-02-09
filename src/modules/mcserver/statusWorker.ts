@@ -1,9 +1,9 @@
-import { Client } from "discord.js";
+import { EVEBot } from "../../bot";
 
 export default class StatusWorker {
     private _playerCount = 0;
 
-    constructor(private _client: Client) { }
+    constructor(private _bot: EVEBot) { }
 
     public addPlayer() {
         this._playerCount++;
@@ -20,11 +20,11 @@ export default class StatusWorker {
     }
 
     public serverStopped() {
-        this._client.user.setActivity(`🔴Offline`);
+        this._bot.getClient().user.setActivity(`🔴Offline`);
     }
 
     private _newPlayerCount() {
-        this._client.user.setActivity(`🟢Online | ${this._playerCount}/5 players`);
+        this._bot.getClient().user.setActivity(`🟢Online | ${this._playerCount}/${this._bot.getConfig().MCmaxPlayers} players`);
     }
 
 
