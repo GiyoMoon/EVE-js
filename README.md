@@ -13,7 +13,7 @@ EVE needs a `config.json` file with the following content:
 }
 ```
 ### Additional Info
-- `consoleChannelID` is the ID of the Discord Channel which should be used as the console. EVE will pass every output into this channel and treat every input from every use as a command. It's exactly like the Minecraft server console.
+- `consoleChannelID` is the ID of the Discord Channel which should be used as the console. EVE will pass every output from the server into this channel and treat every input from every user as a command. It's exactly like the Minecraft server console.
 - `MCmaxPlayers` is the max player count of your server. This property will be used in the status of the discord bot. Like this:
 
 ![EVEStatus](https://imgur.com/vw3Tdef.png)
