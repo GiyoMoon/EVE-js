@@ -6,10 +6,10 @@ RUN npm install
 RUN npm run build
 
 # create image for production
-FROM node:lts
+FROM node:lts-buster
 ENV TZ=Europe/Zurich
 RUN apt update
-RUN apt -y install default-jre
+RUN apt -y install openjdk-11-jre
 WORKDIR /eve
 COPY package*.json ./
 RUN npm install --production
