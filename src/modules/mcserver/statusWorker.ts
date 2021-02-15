@@ -15,8 +15,16 @@ export default class StatusWorker {
         this._newPlayerCount();
     }
 
+    public serverStarting() {
+        this._bot.getClient().user.setActivity(`🟠Starting up...`);
+    }
+
     public serverStarted() {
         this._newPlayerCount();
+    }
+
+    public serverStopping() {
+        this._bot.getClient().user.setActivity(`🟠Stopping...`);
     }
 
     public serverStopped() {

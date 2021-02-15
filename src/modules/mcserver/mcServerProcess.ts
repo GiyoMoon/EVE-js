@@ -5,7 +5,7 @@ import StatusWorker from './statusWorker';
 import { Config } from '../../interfaces/config';
 
 export default class MCServerProcess {
-    private _server: any;
+    private _server: childProcess.ChildProcessWithoutNullStreams;
 
     private _timeoutRunning = false;
 
@@ -18,7 +18,7 @@ export default class MCServerProcess {
         private _statusWorker: StatusWorker,
         private _config: Config
     ) {
-        this._statusWorker.serverStopped()
+        this._statusWorker.serverStopped();
     }
 
     public startMCServer() {
@@ -27,20 +27,29 @@ export default class MCServerProcess {
             return;
         }
         this._running = true;
-        this._consoleChannel.send(':green_circle: Starting up...');
+        this._consoleChannel.send(':orange_circle: Starting up...');
         this._server = childProcess.spawn('java', this._config.MCserverFlags, { cwd: this._config.MCserverPath });
-        this._listenToSTD();
+        this._listenToEvents();
     }
 
     public sendCommand(cmd: string) {
         if (!this._running) {
-            this._consoleChannel.send(':warning: The server is not running. Start it with `start`.');
+            this._consoleChannel.send(':warning: The server is not running. Start it with `start`');
             return;
+        }
+        if (cmd.toLowerCase() === 'stop') {
+            this._statusWorker.serverStopping();
         }
         this._server.stdin.write(cmd + '\n');
     }
 
-    private _listenToSTD() {
+    private _listenToEvents() {
+        this._statusWorker.serverStarting();
+        this._server.on('exit', () => {
+            this._running = false;
+            this._statusWorker.serverStopped();
+        });
+
         this._server.stdout.on('data', (data: string) => this._log(data, false));
         this._server.stderr.on('data', (data: string) => this._log(data, true));
     }
@@ -67,9 +76,6 @@ export default class MCServerProcess {
             this._statusWorker.removePlayer();
         } else if (dataAsString.includes('For help, type "help"')) {
             this._statusWorker.serverStarted();
-        } else if (dataAsString.includes('Saving worlds')) {
-            this._running = false;
-            this._statusWorker.serverStopped();
         }
         this._cachedSTD += error ? `:no_entry_sign: ${dataAsString}` : dataAsString;
         if (!this._timeoutRunning) {
