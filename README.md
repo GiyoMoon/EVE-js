@@ -46,7 +46,6 @@ EVE needs a `config.json` file with the following content:
 
 ![EVEStatus](https://imgur.com/vw3Tdef.png)
 
-
 - `MCserverFlags` are all the java flags which are used to start the server. They are inspired from [here](https://aikar.co/2018/07/02/).
 ## Starting the container
 EVE gets automatically builded and deployed on [Docker Hub](https://hub.docker.com/r/giyomoon/eve) and can be pulled from there.
@@ -65,7 +64,3 @@ Additional ports can be mapped if you are running a dynmap for example.
 `/srv/config` is a folder which includes the `config.json` file.
 
 `/srv/mcserver` is the folder which includes the Minecraft server. It has to include a `.jar` file called `server.jar`.
-
-# Planned features
-## [In progress] Permissions
-It should be possible to give different Discord users different permissions like the permission to only start and stop the server.

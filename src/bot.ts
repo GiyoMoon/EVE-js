@@ -1,3 +1,4 @@
+import { BotDatabase } from './database/database';
 import { existsSync, readdirSync } from 'fs';
 import { Client } from 'discord.js';
 
@@ -18,6 +19,8 @@ export class EVEBot {
     private _messageListener: messageListener;
     private _readyListener: readyListener;
 
+    private _database: BotDatabase
+
     private _modules: Module[];
 
     getClient(): Client {
@@ -35,6 +38,10 @@ export class EVEBot {
 
         this._messageListener = new messageListener(this);
         this._readyListener = new readyListener(this);
+
+        // create database object and init connection
+        this._database = new BotDatabase();
+        this._database.initConnection();
 
         // init event listeners
         this._initEvents();
@@ -69,6 +76,10 @@ export class EVEBot {
 
     public getConfig(): Config {
         return config;
+    }
+
+    public getDatabase(): BotDatabase {
+        return this._database;
     }
 
     public afterReady() {
