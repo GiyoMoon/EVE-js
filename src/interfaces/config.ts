@@ -5,4 +5,6 @@ export interface Config {
     MCmaxPlayers: number;
     MCserverFlags: string[];
     MCserverPath: string;
+    MCautoShutdown: boolean;
+    MCshutdownAfter: number;
 }

@@ -1,5 +1,3 @@
-import { Message } from "discord.js";
-
 export interface ModuleInstance {
     info: {
         id: number,
