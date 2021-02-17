@@ -1,18 +1,28 @@
-import { EVEBot } from "../../bot";
+import { EventEmitter } from 'ws';
 
-export default class StatusWorker {
+import { EVEBot } from '../../bot';
+
+export default class StatusWorker extends EventEmitter {
     private _playerCount = 0;
 
-    constructor(private _bot: EVEBot) { }
+    constructor(private _bot: EVEBot) {
+        super();
+    }
+
+    public getPlayerCount() {
+        return this._playerCount;
+    }
 
     public addPlayer() {
         this._playerCount++;
         this._newPlayerCount();
+        this.emit('playerChange', this._playerCount - 1, this._playerCount);
     }
 
     public removePlayer() {
         this._playerCount--;
         this._newPlayerCount();
+        this.emit('playerChange', this._playerCount + 1, this._playerCount);
     }
 
     public serverStarting() {

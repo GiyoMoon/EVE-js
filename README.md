@@ -37,7 +37,9 @@ EVE needs a `config.json` file with the following content:
         "server.jar",
         "nogui"
     ],
-    "MCserverPath": "/server"
+    "MCserverPath": "/server",
+    "MCautoShutdown": false,
+    "MCshutdownAfter": 60
 }
 ```
 ### Additional Info
@@ -48,6 +50,9 @@ EVE needs a `config.json` file with the following content:
 
 
 - `MCserverFlags` are all the java flags which are used to start the server. They are inspired from [here](https://aikar.co/2018/07/02/).
+- `MCserverPath` is the internal path to the Minecraft server. Should only be changed if you are in a development environment.
+- `MCautoShutdown` whether to automatically shut down the Minecraft server when no users are online.
+- `MCshutdownAfter` after how many **minutes**, when no player is online, the server should be shut down.
 ## Starting the container
 EVE gets automatically builded and deployed on [Docker Hub](https://hub.docker.com/r/giyomoon/eve) and can be pulled from there.
 

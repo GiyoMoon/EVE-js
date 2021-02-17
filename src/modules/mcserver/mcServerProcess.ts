@@ -13,6 +13,8 @@ export default class MCServerProcess {
 
     private _running = false;
 
+    private _shutdownTimeout: NodeJS.Timeout;
+
     constructor(
         private _consoleChannel: TextChannel,
         private _statusWorker: StatusWorker,
@@ -27,7 +29,12 @@ export default class MCServerProcess {
             return;
         }
         this._running = true;
+
         this._consoleChannel.send(':orange_circle: Starting up...');
+        if (this._config.MCautoShutdown) {
+            this._consoleChannel.send(`:blue_circle: AutoShutdown is configured for ${this._config.MCshutdownAfter} minute${this._config.MCshutdownAfter > 1 ? 's' : ''}.`);
+        }
+
         this._server = childProcess.spawn('java', this._config.MCserverFlags, { cwd: this._config.MCserverPath });
         this._listenToEvents();
     }
@@ -38,6 +45,9 @@ export default class MCServerProcess {
             return;
         }
         if (cmd.toLowerCase() === 'stop') {
+            if (this._config.MCautoShutdown) {
+                clearTimeout(this._shutdownTimeout);
+            }
             this._statusWorker.serverStopping();
         }
         this._server.stdin.write(cmd + '\n');
@@ -52,6 +62,24 @@ export default class MCServerProcess {
 
         this._server.stdout.on('data', (data: string) => this._log(data, false));
         this._server.stderr.on('data', (data: string) => this._log(data, true));
+
+        // listen to playerChange events if the autoShutdown is configured
+        if (this._config.MCautoShutdown) {
+            this._statusWorker.on('playerChange', (oldCount: number, newCount: number) => {
+                if (oldCount === 0) {
+                    clearTimeout(this._shutdownTimeout);
+                } else if (newCount === 0) {
+                    this._startAutoShutdown();
+                }
+            });
+        }
+    }
+
+    private _startAutoShutdown() {
+        this._shutdownTimeout = setTimeout(async () => {
+            await this._consoleChannel.send(`:red_circle: No players were online for ${this._config.MCshutdownAfter} minute${this._config.MCshutdownAfter > 1 ? 's' : ''}. Server is shutting down...`);
+            this.sendCommand('stop');
+        }, this._config.MCshutdownAfter * 60 * 1000);
     }
 
     private _startTimeout() {
@@ -75,6 +103,9 @@ export default class MCServerProcess {
         } else if (dataAsString.includes('left the game')) {
             this._statusWorker.removePlayer();
         } else if (dataAsString.includes('For help, type "help"')) {
+            if (this._config.MCautoShutdown) {
+                this._startAutoShutdown();
+            }
             this._statusWorker.serverStarted();
         }
         this._cachedSTD += error ? `:no_entry_sign: ${dataAsString}` : dataAsString;
