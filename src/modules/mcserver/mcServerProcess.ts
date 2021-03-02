@@ -76,6 +76,9 @@ export default class MCServerProcess {
     }
 
     private _startAutoShutdown() {
+        if (this._shutdownTimeout) {
+            clearTimeout(this._shutdownTimeout);
+        }
         this._shutdownTimeout = setTimeout(async () => {
             await this._consoleChannel.send(`:red_circle: No players were online for ${this._config.MCshutdownAfter} minute${this._config.MCshutdownAfter > 1 ? 's' : ''}. Server is shutting down...`);
             this.sendCommand('stop');
