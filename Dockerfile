@@ -1,3 +1,4 @@
+ARG NODE_VERSION 
 # Transpile typescript into javascript
 FROM node:lts-alpine
 WORKDIR /app
@@ -6,7 +7,6 @@ RUN npm install
 RUN npm run build
 
 # create image for production
-ARG NODE_VERSION 
 FROM node:$NODE_VERSION 
 
 ENV TZ=Europe/Zurich
