@@ -58,12 +58,12 @@ EVE gets automatically builded and deployed on [Github Packages](https://github.
 
 The container can be run with the following command:
 ```bash
-docker run -d -p 25565:25565 -v PATH_TO_YOUR_CONFIG_FOLDER:/eve/config -v PATH_TO_YOUR_SERVER_FOLDER:/server --name EVE ghcr.io/giyomoon/eve
+docker run -d -p 25565:25565 -v PATH_TO_YOUR_CONFIG_FOLDER:/eve/config -v PATH_TO_YOUR_SERVER_FOLDER:/server --name EVE ghcr.io/giyomoon/eve:java17
 ```
 
 For example:
 ```bash
-docker run -d -p 25565:25565 -v /srv/config:/eve/config -v /srv/mcserver:/server --name EVE ghcr.io/giyomoon/eve
+docker run -d -p 25565:25565 -v /srv/config:/eve/config -v /srv/mcserver:/server --name EVE ghcr.io/giyomoon/eve:java17
 ```
 Additional ports can be mapped if you are running a dynmap for example.
 ### Volume folders
@@ -74,4 +74,7 @@ Additional ports can be mapped if you are running a dynmap for example.
 ## Java version
 EVE gets build for three different Java versions. Java 17, 11 and 8. Depending on the version/type of your Minecraft server, you need to choose the correct version for you.
 
-The latest tag is build with java 17, which has to be used for Minecraft version 1.17 and 1.18.
+### Docker Image Tags
+- `Java 17`: `java17` (`ghcr.io/giyomoon/eve:java17`)
+- `Java 11`: `java11` (`ghcr.io/giyomoon/eve:java11`)
+- `Java 8`: `java8` (`ghcr.io/giyomoon/eve:java8`)
