@@ -54,16 +54,16 @@ EVE needs a `config.json` file with the following content:
 - `MCautoShutdown` whether to automatically shut down the Minecraft server when no users are online.
 - `MCshutdownAfter` after how many **minutes**, when no player is online, the server should be shut down.
 ## Starting the container
-EVE gets automatically builded and deployed on [Docker Hub](https://hub.docker.com/r/giyomoon/eve) and can be pulled from there.
+EVE gets automatically builded and deployed on [Github Packages](https://github.com/GiyoMoon/EVE/pkgs/container/eve) and can be pulled from there.
 
 The container can be run with the following command:
 ```bash
-docker run -d -p 25565:25565 -v PATH_TO_YOUR_CONFIG_FOLDER:/eve/config -v PATH_TO_YOUR_SERVER_FOLDER:/server --name EVE giyomoon/eve
+docker run -d -p 25565:25565 -v PATH_TO_YOUR_CONFIG_FOLDER:/eve/config -v PATH_TO_YOUR_SERVER_FOLDER:/server --name EVE ghcr.io/giyomoon/eve
 ```
 
 For example:
 ```bash
-docker run -d -p 25565:25565 -v /srv/config:/eve/config -v /srv/mcserver:/server --name EVE giyomoon/eve
+docker run -d -p 25565:25565 -v /srv/config:/eve/config -v /srv/mcserver:/server --name EVE ghcr.io/giyomoon/eve
 ```
 Additional ports can be mapped if you are running a dynmap for example.
 ### Volume folders
@@ -71,6 +71,7 @@ Additional ports can be mapped if you are running a dynmap for example.
 
 `/srv/mcserver` is the folder which includes the Minecraft server. It has to include a `.jar` file called `server.jar`.
 
-# Planned features
-## [In progress] Permissions
-It should be possible to give different Discord users different permissions like the permission to only start and stop the server.
+## Java version
+EVE gets build for three different Java versions. Java 17, 11 and 8. Depending on the version/type of your Minecraft server, you need to choose the correct version for you.
+
+The latest tag is build with java 17, which has to be used for Minecraft version 1.17 and 1.18.

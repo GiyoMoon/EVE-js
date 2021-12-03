@@ -18,7 +18,7 @@ jobs:
         with:
           images: ghcr.io/giyomoon/eve
           tags: |
-            type=raw,value={{branch}}-{{sha}}-java16
+            type=raw,value={{branch}}-{{sha}}-java17
           flavor: |
             latest=${{ endsWith(github.ref, github.event.repository.default_branch) }}
       -
@@ -35,4 +35,4 @@ jobs:
         with:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          file: ./Dockerfile_java16
+          file: ./Dockerfile_java17

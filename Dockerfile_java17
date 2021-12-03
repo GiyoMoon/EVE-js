@@ -1,0 +1,28 @@
+# Transpile typescript into javascript
+FROM node:lts-alpine
+WORKDIR /app
+COPY . .
+RUN npm install
+RUN npm run build
+
+# create image for production
+FROM node:lts-buster
+
+ENV TZ=Europe/Zurich
+
+RUN cd ~/ && wget --no-check-certificate -c https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jdk_x64_linux_hotspot_17.0.1_12.tar.gz
+RUN mkdir /usr/lib/jvm
+RUN cd /usr/lib/jvm && tar -xvzf ~/OpenJDK17U-jdk_x64_linux_hotspot_17.0.1_12.tar.gz
+RUN echo "PATH=\"/usr/lib/jvm/jdk-17.0.1+12/bin\"" > /etc/environment
+RUN echo "JAVA_HOME=\"/usr/lib/jvm/jdk-17.0.1+12\"" >> /etc/environment
+RUN update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/jdk-17.0.1+12/bin/java" 0
+RUN update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/jvm/jdk-17.0.1+12/bin/javac" 0
+RUN update-alternatives --set java /usr/lib/jvm/jdk-17.0.1+12/bin/java
+RUN update-alternatives --set javac /usr/lib/jvm/jdk-17.0.1+12/bin/javac
+
+WORKDIR /eve
+COPY package*.json ./
+RUN npm install --production
+COPY --from=0 ./app/dist .
+
+CMD npm start
