@@ -1,3 +1,6 @@
+# **Archived Repository**
+This is the old repository for EVE written in Javascript. I rewrote the bot with new features in Rust [here](https://github.com/GiyoMoon/EVE).
+
 ![EVE](https://imgur.com/cgiKlF3.png)
 
 With EVE you can control a Minecraft server via Discord!
@@ -54,16 +57,16 @@ EVE needs a `config.json` file with the following content:
 - `MCautoShutdown` whether to automatically shut down the Minecraft server when no users are online.
 - `MCshutdownAfter` after how many **minutes**, when no player is online, the server should be shut down.
 ## Starting the container
-EVE gets automatically builded and deployed on [Github Packages](https://github.com/GiyoMoon/EVE/pkgs/container/eve) and can be pulled from there.
+EVE gets automatically builded and deployed on [Github Packages](https://github.com/GiyoMoon/EVE-js/pkgs/container/eve-js) and can be pulled from there.
 
 The container can be run with the following command:
 ```bash
-docker run -d -p 25565:25565 -v PATH_TO_YOUR_CONFIG_FOLDER:/eve/config -v PATH_TO_YOUR_SERVER_FOLDER:/server --name EVE ghcr.io/giyomoon/eve:java17
+docker run -d -p 25565:25565 -v PATH_TO_YOUR_CONFIG_FOLDER:/eve/config -v PATH_TO_YOUR_SERVER_FOLDER:/server --name EVE ghcr.io/giyomoon/eve-js:java17
 ```
 
 For example:
 ```bash
-docker run -d -p 25565:25565 -v /srv/config:/eve/config -v /srv/mcserver:/server --name EVE ghcr.io/giyomoon/eve:java17
+docker run -d -p 25565:25565 -v /srv/config:/eve/config -v /srv/mcserver:/server --name EVE ghcr.io/giyomoon/eve-js:java17
 ```
 Additional ports can be mapped if you are running a dynmap for example.
 ### Volume folders
@@ -75,6 +78,6 @@ Additional ports can be mapped if you are running a dynmap for example.
 EVE gets build for three different Java versions. Java 17, 11 and 8. Depending on the version/type of your Minecraft server, you need to choose the correct version for you.
 
 ### Docker Image Tags
-- `Java 17`: `java17` (`ghcr.io/giyomoon/eve:java17`)
-- `Java 11`: `java11` (`ghcr.io/giyomoon/eve:java11`)
-- `Java 8`: `java8` (`ghcr.io/giyomoon/eve:java8`)
+- `Java 17`: `java17` (`ghcr.io/giyomoon/eve-js:java17`)
+- `Java 11`: `java11` (`ghcr.io/giyomoon/eve-js:java11`)
+- `Java 8`: `java8` (`ghcr.io/giyomoon/eve-js:java8`)

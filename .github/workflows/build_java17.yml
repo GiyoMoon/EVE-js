@@ -16,7 +16,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ghcr.io/giyomoon/eve
+          images: ghcr.io/giyomoon/eve-js
           tags: |
             type=raw,value={{branch}}-{{sha}}-java17
             type=raw,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }},value=java17
